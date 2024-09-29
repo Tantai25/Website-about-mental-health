@@ -1,376 +1,967 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ở đây có sự bình yên - Sức Khỏe Tâm Thần cho Thế Hệ Z</title>
-    <!-- Thêm Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Thêm Font Awesome cho các biểu tượng -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ở đây có sự bình yên - Sức Khỏe Tâm Thần cho Thế Hệ Z</title>
+  
+  <!-- Thêm Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Cấu hình Tailwind CSS cho chế độ tối dựa trên lớp -->
+  <script>
+    // Đảm bảo rằng Tailwind CSS đã được tải trước khi cấu hình
+    window.addEventListener('DOMContentLoaded', () => {
+      tailwind.config = {
+        darkMode: 'class', // Thiết lập chế độ tối dựa trên lớp
+        theme: {
+          extend: {},
+        },
+        plugins: [],
+      }
+    });
+  </script>
+
+  <script>
+    function isMobileDevice() {
+      return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      if (isMobileDevice()) {
+        document.body.classList.add('desktop-like');
+      }
+    });
+  </script>
+
+
+  <!-- Thêm Font Awesome cho các biểu tượng -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  
+  <style>
+    /* Removed duplicate .advice-box styles */
+
+    /* Đĩa than xoay cho podcast */
+    .vinyl {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 10px solid #fff;
+      background-color: #333;
+      position: relative;
+      animation: spin-vinyl 4s linear infinite;
+      transform-origin: center center;
+    }
+
+    .vinyl::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 30px;
+      height: 30px;
+      background-color: #fff;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    @keyframes spin-vinyl {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Nút dừng/phát */
+    .stop-button {
+      width: 40px;
+      height: 40px;
+      background-color: red; /* Thay đổi màu nền thành đỏ */
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      cursor: pointer;
+      position: absolute;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      transition: background-color 0.3s ease;
+    }
+
+    .stop-button:hover {
+      background-color: darkred; /* Thay đổi màu nền khi hover nếu muốn */
+    }
+
+    /* CSS cho khung chat */
+    #chatWindow {
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      max-height: 300px;
+      padding: 10px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+    }
+
+    .chat-bubble {
+      max-width: 70%;
+      word-wrap: break-word;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .chat-bubble-self {
+      align-self: flex-end;
+      background-color: #4ade80; /* Green-400 */
+      color: white;
+    }
+
+    .chat-bubble-other {
+      align-self: flex-start;
+      background-color: #3b82f6; /* Blue-500 */
+      color: white;
+    }
+
+    /* Loading Spinner Styles */
+    .loader {
+      border-top-color: #3498db;
+      animation: spin-loader 1s infinite linear;
+    }
+    @keyframes spin-loader {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Dark Mode Specific Styles */
+    .dark {
+      background-color: #121212;
+      color: #ffffff;
+    }
+    .dark .bg-white {
+      background-color: rgba(255, 255, 255, 0.1) !important;
+    }
+    .dark .text-white {
+      color: #ffffff !important;
+    }
+    .dark .bg-opacity-10 {
+      background-color: rgba(255, 255, 255, 0.1) !important;
+    }
+    .dark .bg-opacity-20 {
+      background-color: rgba(255, 255, 255, 0.2) !important;
+    }
+    .dark .bg-gradient-to-br.from-pink-300 {
+      background: linear-gradient(to bottom right, #333, #444) !important;
+    }
+
+    /* Nút chuyển ngôn ngữ */
+    .lang-switch {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: rgba(255, 255, 255, 0.5);
+      color: #000;
+      font-weight: bold;
+      padding: 10px 20px;
+      border-radius: 30px;
+      cursor: pointer;
+      z-index: 100;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    /* Nút chuyển chế độ tối */
+    .dark-mode-toggle {
+      position: absolute;
+      top: 20px;
+      right: 150px;
+      background-color: rgba(255, 255, 255, 0.5);
+      color: #000;
+      font-weight: bold;
+      padding: 10px 20px;
+      border-radius: 30px;
+      cursor: pointer;
+      z-index: 100;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    /* Additional Styles for Advice Boxes and Chat */
+    .advice-box {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s, background 0.3s;
+    }
+
+    .advice-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.1));
+    }
+  </style>
+
 </head>
-<body class="bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 min-h-screen flex flex-col items-center justify-center p-4">
-    <main class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-3xl shadow-2xl p-8 max-w-4xl w-full relative overflow-hidden">
-        <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-pink-300 via-purple-300 to-indigo-300 opacity-30 z-0"></div>
-        <div class="relative z-10">
-            <button id="backButton" class="absolute top-4 left-4 bg-white bg-opacity-20 hover:bg-opacity-30 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 hidden transform hover:scale-105 shadow-lg hover:shadow-xl active:scale-95 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50">
-                <i class="fas fa-arrow-left mr-2"></i>Quay lại
-            </button>
-            <h1 class="text-5xl font-bold text-center mb-8 text-white animate-pulse">Ở đây có sự bình yên</h1>
-            <p class="text-2xl text-center mb-12 text-white">Hôm nay bạn cảm thấy thế nào?</p>
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-6" id="emoteButtons">
-                <!-- Nút cảm xúc -->
-                <button class="emote-btn bg-gradient-to-br from-yellow-300 to-yellow-500 hover:from-yellow-400 hover:to-yellow-600 transition-all duration-300 rounded-2xl transform hover:scale-105 hover:rotate-3" aria-label="Vui vẻ" data-emote="happy">
-                    <div class="w-full h-32 flex items-center justify-center text-6xl text-white">
-                        <i class="fas fa-smile animate-bounce"></i>
-                    </div>
-                    <span class="block py-2 text-lg font-semibold text-white">Vui vẻ</span>
-                </button>
-                <button class="emote-btn bg-gradient-to-br from-blue-300 to-blue-500 hover:from-blue-400 hover:to-blue-600 transition-all duration-300 rounded-2xl transform hover:scale-105 hover:rotate-3" aria-label="Buồn" data-emote="sad">
-                    <div class="w-full h-32 flex items-center justify-center text-6xl text-white">
-                        <i class="fas fa-sad-tear animate-pulse"></i>
-                    </div>
-                    <span class="block py-2 text-lg font-semibold text-white">Buồn</span>
-                </button>
-                <button class="emote-btn bg-gradient-to-br from-red-300 to-red-500 hover:from-red-400 hover:to-red-600 transition-all duration-300 rounded-2xl transform hover:scale-105 hover:rotate-3" aria-label="Tức giận" data-emote="angry">
-                    <div class="w-full h-32 flex items-center justify-center text-6xl text-white">
-                        <i class="fas fa-angry animate-ping"></i>
-                    </div>
-                    <span class="block py-2 text-lg font-semibold text-white">Tức giận</span>
-                </button>
-                <button class="emote-btn bg-gradient-to-br from-purple-300 to-purple-500 hover:from-purple-400 hover:to-purple-600 transition-all duration-300 rounded-2xl transform hover:scale-105 hover:rotate-3" aria-label="Sợ hãi" data-emote="scared">
-                    <div class="w-full h-32 flex items-center justify-center text-6xl text-white">
-                        <i class="fas fa-flushed animate-spin"></i>
-                    </div>
-                    <span class="block py-2 text-lg font-semibold text-white">Sợ hãi</span>
-                </button>
-                <button class="emote-btn bg-gradient-to-br from-green-300 to-green-500 hover:from-green-400 hover:to-green-600 transition-all duration-300 rounded-2xl transform hover:scale-105 hover:rotate-3" aria-label="Căng thẳng" data-emote="stressed">
-                    <div class="w-full h-32 flex items-center justify-center text-6xl text-white">
-                        <i class="fas fa-tired animate-pulse"></i>
-                    </div>
-                    <span class="block py-2 text-lg font-semibold text-white">Căng thẳng</span>
-                </button>
+<body class="bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 dark:from-gray-800 dark:via-gray-700 dark:to-gray-900 min-h-screen flex flex-col items-center justify-center p-4 transition-colors duration-500">
+  <!-- Nút chuyển ngôn ngữ -->
+  <button class="lang-switch bg-white bg-opacity-50 dark:bg-gray-700 dark:text-white text-black font-bold py-2 px-4 rounded-full transition-colors duration-300" id="langSwitch">English</button>
+
+  <!-- Nút chuyển đổi chế độ tối -->
+  <button class="dark-mode-toggle bg-white bg-opacity-50 dark:bg-gray-700 dark:text-white text-black font-bold py-2 px-4 rounded-full cursor-pointer z-50 transition-colors duration-300" id="darkModeToggle">Dark Mode</button>
+  
+  <main class="bg-white bg-opacity-10 dark:bg-gray-800 dark:bg-opacity-20 backdrop-filter backdrop-blur-lg rounded-3xl shadow-2xl p-8 max-w-4xl w-full relative overflow-hidden transition-colors duration-500">
+    <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-pink-300 via-purple-300 to-indigo-300 opacity-30 dark:from-gray-700 dark:via-gray-600 dark:to-gray-800 z-0"></div>
+    <div class="relative z-10">
+      <!-- Tiêu đề trang -->
+      <h1 class="text-5xl font-bold text-center mb-8 text-white animate-pulse" id="pageTitle">FOR YOU</h1>
+      
+      <!-- Nút "Quay lại" -->
+      <button id="backButton" class="bg-white bg-opacity-20 hover:bg-opacity-35 dark:bg-gray-600 dark:hover:bg-gray-500 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 hidden mx-auto mb-8 transform hover:scale-105 shadow-lg hover:shadow-xl active:scale-92 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50">
+        <i class="fas fa-arrow-left mr-2"></i><span id="backText">Quay lại</span>
+      </button>
+
+      <!-- Câu hỏi cảm xúc -->
+      <p id="howAreYouText" class="text-2xl text-center mb-12 text-white">Hôm nay bạn cảm thấy thế nào?</p>
+      
+      <!-- Các nút cảm xúc -->
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-6" id="emoteButtons">
+        <!-- Nút cảm xúc Vui vẻ -->
+        <button class="emote-btn bg-gradient-to-br from-yellow-300 to-yellow-500 hover:from-yellow-400 hover:to-yellow-600 dark:from-yellow-400 dark:to-yellow-600 transition-all duration-300 rounded-2xl transform hover:scale-105 hover:rotate-3" aria-label="Vui vẻ" data-emote="happy">
+          <div class="w-full h-32 flex items-center justify-center text-6xl text-white">
+            <i class="fas fa-smile animate-bounce"></i>
+          </div>
+          <span class="block py-2 text-lg font-semibold text-white" id="happyText">Vui vẻ</span>
+        </button>
+        
+        <!-- Nút cảm xúc Buồn -->
+        <button class="emote-btn bg-gradient-to-br from-blue-300 to-blue-500 hover:from-blue-400 hover:to-blue-600 dark:from-blue-400 dark:to-blue-600 transition-all duration-300 rounded-2xl transform hover:scale-105 hover:rotate-3" aria-label="Buồn" data-emote="sad">
+          <div class="w-full h-32 flex items-center justify-center text-6xl text-white">
+            <i class="fas fa-sad-tear animate-pulse"></i>
+          </div>
+          <span class="block py-2 text-lg font-semibold text-white" id="sadText">Buồn</span>
+        </button>
+        
+        <!-- Nút cảm xúc Tức giận -->
+        <button class="emote-btn bg-gradient-to-br from-red-300 to-red-500 hover:from-red-400 hover:to-red-600 dark:from-red-400 dark:to-red-600 transition-all duration-300 rounded-2xl transform hover:scale-105 hover:rotate-3" aria-label="Tức giận" data-emote="angry">
+          <div class="w-full h-32 flex items-center justify-center text-6xl text-white">
+            <i class="fas fa-angry animate-ping"></i>
+          </div>
+          <span class="block py-2 text-lg font-semibold text-white" id="angryText">Tức giận</span>
+        </button>
+        
+        <!-- Nút cảm xúc Sợ hãi -->
+        <button class="emote-btn bg-gradient-to-br from-purple-300 to-purple-500 hover:from-purple-400 hover:to-purple-600 dark:from-purple-400 dark:to-purple-600 transition-all duration-300 rounded-2xl transform hover:scale-105 hover:rotate-3" aria-label="Sợ hãi" data-emote="scared">
+          <div class="w-full h-32 flex items-center justify-center text-6xl text-white">
+            <i class="fas fa-flushed animate-spin"></i>
+          </div>
+          <span class="block py-2 text-lg font-semibold text-white" id="scaredText">Sợ hãi</span>
+        </button>
+        
+        <!-- Nút cảm xúc Căng thẳng -->
+        <button class="emote-btn bg-gradient-to-br from-green-300 to-green-500 hover:from-green-400 hover:to-green-600 dark:from-green-400 dark:to-green-600 transition-all duration-300 rounded-2xl transform hover:scale-105 hover:rotate-3" aria-label="Căng thẳng" data-emote="stressed">
+          <div class="w-full h-32 flex items-center justify-center text-6xl text-white">
+            <i class="fas fa-tired animate-pulse"></i>
+          </div>
+          <span class="block py-2 text-lg font-semibold text-white" id="stressedText">Căng thẳng</span>
+        </button>
+      </div>
+      
+      <!-- Nút điều hướng đến trang thư giãn -->
+      <button id="relaxButton" class="bg-white bg-opacity-20 hover:bg-opacity-30 dark:bg-gray-600 dark:hover:bg-gray-500 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 mt-8 transform hover:scale-105 shadow-lg hover:shadow-xl">
+        <i class="fas fa-music mr-2"></i><span id="relaxText">Thư giãn chút không?</span>
+      </button>
+      
+      <!-- Phần thư giãn -->
+      <div id="relaxSection" class="hidden mt-12">
+        <h2 class="text-4xl font-bold text-center mb-8 text-white animate-pulse" id="relaxTitle">Bạn hãy nhắm mắt lại!</h2>
+        <p class="text-2xl text-center mb-8 text-white" id="relaxDesc">Thư giãn với podcast, nhạc và sách yêu thích</p>
+        
+        <!-- Chỉnh sửa grid để phần Spotify rộng ra -->
+        <div class="grid grid-cols-1 gap-6">
+          <!-- Khu vực Podcast và Đọc Sách -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Khu vực Podcast với đĩa than xoay -->
+            <div class="bg-white bg-opacity-20 dark:bg-gray-700 dark:bg-opacity-30 rounded-lg p-6 flex flex-col items-center">
+              <h3 class="text-2xl font-bold mb-4 text-white" id="podcastTitle">Nghe Podcast</h3>
+              <div class="vinyl relative">
+                <div class="stop-button" id="podcastStopBtn"><i class="fas fa-play"></i></div>
+              </div>
+              <!-- Video podcast -->
+              <video id="podcastVideo" controls class="hidden mt-4 w-full h-auto">
+                <source src="https://rr2---sn-a5mlrnll.googlevideo.com/videoplayback?expire=1727616498&ei=kgH5Zuu4FsjartoPvZ3h4A4&ip=119.82.70.29&id=o-ANhp4iIrNuBmwHEbz6OZUSIc58YaZTYOR8X7d-eE00-A&itag=140&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&bui=AXLXGFTSmt9dHKnQ1SuXuhWu4G-3CCvQuabsV9Yea3QKrzFjkHOa_FoPkHH8OKAnBPjTya8sUucCVwoG&spc=54Mbxfkn4iSil9-YsaqhkXORvOuYBvyiFKdHCYBWvILAbX1J4mgk&vprv=1&svpuc=1&mime=audio%2Fmp4&ns=Tl3Vl3zw_edu5wz4gQlqVMMQ&rqh=1&gir=yes&clen=19284731&dur=1191.555&lmt=1694652472643320&keepalive=yes&fexp=24350518,24350557,51299152&c=WEB_CREATOR&sefc=1&txp=5432434&n=z2-ptu4H4Bm3jA&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cbui%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Cns%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AJfQdSswRAIgOSFthjS4dcBdliNAtAR5-Qo25I_ltbGD6gAIiCTCsdUCIFK3cJyHaV1sRMoGabFHNSNuB7kG59HxFNebX4CR7mKj&redirect_counter=1&cm2rm=sn-qxae7z&rrc=80&req_id=13420c0c65dca3ee&cms_redirect=yes&cmsv=e&mh=jF&mip=183.91.22.22&mm=34&mn=sn-a5mlrnll&ms=ltu&mt=1727593991&mv=u&mvi=2&pl=21&lsparams=mh,mip,mm,mn,ms,mv,mvi,pl&lsig=ABPmVW0wRQIhALu8altfN4O_6Eu_UmIURabcN-49SgXadGyIs4KioEClAiB7IGguZownQwzf93tVNxhIhUV5Rs9AhslbB0g4qIeEOg%3D%3D" type="video/mp4">
+                Trình duyệt của bạn không hỗ trợ thẻ video.
+              </video>
+              <span class="block py-2 text-lg font-semibold text-white text-center mt-4" id="podcastDesc">Podcast thư giãn</span>
             </div>
 
-            <div id="emotePage" class="hidden mt-12">
-                <h2 id="emoteTitle" class="text-4xl font-bold text-center mb-8 text-white animate-pulse"></h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Phần tạo bài viết trên diễn đàn -->
-                    <div id="forumSection" class="bg-white bg-opacity-20 rounded-lg p-6">
-                        <h3 class="text-2xl font-bold mb-4 text-white">Hãy chia sẻ </h3>
-                        <form id="forumForm" class="space-y-4">
-                            <textarea id="forumContent" class="w-full h-32 p-2 rounded-lg" placeholder="Chia sẻ cảm xúc của bạn..."></textarea>
-                            <input type="file" id="forumImage" accept="image/*" class="block w-full text-sm text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100" />
-                            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300">Đăng bài</button>
-                        </form>
-                    </div>
-                    <!-- Phần lời khuyên từ chuyên gia -->
-                    <div id="expertAdviceSection" class="bg-white bg-opacity-20 rounded-lg p-6">
-                        <h3 class="text-2xl font-bold mb-4 text-white">Lời khuyên từ Chuyên gia</h3>
-                        <div id="expertAdviceContent" class="text-white"></div>
-                        <a href="#" id="expertAdviceLink" class="block mt-4 text-blue-300 hover:text-blue-400 transition-colors duration-300" target="_blank">Xem thêm lời khuyên</a>
-                    </div>
-                    <!-- Phần hành động đề xuất -->
-                    <div id="actionSection" class="bg-white bg-opacity-20 rounded-lg p-6">
-                        <h3 class="text-2xl font-bold mb-4 text-white">Hành động đề xuất</h3>
-                        <ul id="actionList" class="list-disc list-inside text-white space-y-2"></ul>
-                    </div>
-                    <!-- Phần podcast được đề xuất -->
-                    <div id="podcastSection" class="bg-white bg-opacity-20 rounded-lg p-6">
-                        <h3 class="text-2xl font-bold mb-4 text-white">Podcast được đề xuất</h3>
-                        <div id="podcastContent" class="text-white"></div>
-                        <a href="#" id="podcastLink" class="block mt-4 text-blue-300 hover:text-blue-400 transition-colors duration-300" target="_blank">Nghe podcast</a>
-                    </div>
-                </div>
-
-                <!-- Khu vực chat -->
-                <div id="chatSection" class="bg-white bg-opacity-20 rounded-lg p-6 mt-8">
-                    <h3 class="text-2xl font-bold mb-4 text-white">Chat với AI</h3>
-                    <div id="chatWindow" class="space-y-4 max-h-64 overflow-y-auto">
-                        <!-- Tin nhắn sẽ được thêm vào đây -->
-                    </div>
-                    <form id="chatForm" class="mt-4 flex space-x-2">
-                        <input id="chatInput" type="text" class="w-full p-2 rounded-lg" placeholder="Nhập tin nhắn của bạn...">
-                        <button type="submit" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300">
-                            Gửi
-                        </button>
-                    </form>
-                </div>
+            <!-- Khu vực Gợi ý Sách -->
+            <div class="bg-white bg-opacity-20 dark:bg-gray-700 dark:bg-opacity-30 rounded-lg p-6 flex flex-col items-center">
+              <h3 class="text-2xl font-bold mb-4 text-white" id="bookTitle">Đọc Sách Thư Giãn</h3>
+              <ul class="list-disc list-inside text-white space-y-2 text-center">
+                <li><a href="https://pubhtml5.com/gbwwc/ujjg/Nh%E1%BB%AFng_ng%C6%B0%E1%BB%9Di_kh%E1%BB%91n_kh%E1%BB%95/" target="_blank" class="text-blue-500 hover:text-blue-600 transition">Sách Thư Giãn 1</a></li>
+                <li><a href="https://pubhtml5.com/pbty/libi/Y%C3%AAu_Nh%E1%BB%AFng_%C4%90i%E1%BB%81u_Kh%C3%B4ng_Ho%C3%A0n_H%E1%BA%A3o/" target="_blank" class="text-blue-500 hover:text-blue-600 transition">Sách Thư Giãn 2</a></li>
+                <li><a href="https://pubhtml5.com/ntqa/vyts/Hi%E1%BB%83u_v%E1%BB%81_tr%C3%A1i_tim/" target="_blank" class="text-blue-500 hover:text-blue-600 transition">Sách Thư Giãn 3</a></li>
+              </ul>
             </div>
+          </div>
+
+          <!-- Khu vực Nghe Nhạc rộng -->
+          <div class="bg-white bg-opacity-20 dark:bg-gray-700 dark:bg-opacity-30 rounded-lg p-6 flex flex-col items-center mt-6">
+            <h3 class="text-2xl font-bold mb-4 text-white" id="musicTitle">Nghe nhạc nè</h3>
+            <!-- Iframe Spotify -->
+            <div class="w-full h-48 md:h-96 mb-4">
+              <iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DZ06evO2EAUJs" width="100%" height="100%" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+            </div>
+          </div>
         </div>
-    </main>
+      </div>
 
+      <!-- Phần cảm xúc -->
+      <div id="emotePage" class="hidden mt-12">
+        <h2 id="emoteTitle" class="text-4xl font-bold text-center mb-8 text-white animate-pulse"></h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Phần tạo bài viết trên diễn đàn -->
+          <div id="forumSection" class="bg-white bg-opacity-20 dark:bg-gray-700 dark:bg-opacity-30 rounded-lg p-6">
+            <h3 class="text-2xl font-bold mb-4 text-white" id="forumTitle">Hãy chia sẻ đến chúng tôi</h3>
+            <form id="forumForm" class="space-y-4">
+              <textarea id="forumContent" class="w-full h-32 p-2 rounded-lg" placeholder="Chia sẻ cảm xúc của bạn..." required></textarea>
+              <input type="file" id="forumImage" accept="image/*" class="block w-full text-sm text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100" />
+              <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300" id="submitForum">Đăng bài</button>
+            </form>
+          </div>
+          
+          <!-- Phần lời khuyên từ chuyên gia -->
+          <div id="expertAdviceSection" class="bg-white bg-opacity-20 dark:bg-gray-700 dark:bg-opacity-30 rounded-lg p-6 advice-box fade-in">
+            <h3 class="text-2xl font-bold mb-4 text-white flex items-center" id="expertAdviceTitle">
+              <i class="fas fa-user-md advice-icon"></i> Lời khuyên từ Chuyên gia
+            </h3>
+            <div id="expertAdviceContent" class="text-white mb-4"></div>
+            <a href="#" id="expertAdviceLink" class="block mt-4 text-blue-300 hover:text-blue-400 flex items-center">
+              <i class="fas fa-external-link-alt mr-2"></i> Xem thêm lời khuyên
+            </a>
+          </div>
+
+          
+          <!-- Phần hành động đề xuất -->
+          <div id="actionSection" class="bg-white bg-opacity-20 dark:bg-gray-700 dark:bg-opacity-30 rounded-lg p-6 advice-box fade-in">
+            <h3 class="text-2xl font-bold mb-4 text-white flex items-center" id="actionTitle">
+              <i class="fas fa-lightbulb advice-icon"></i> Hành động đề xuất
+            </h3>
+            <ul id="actionList" class="list-disc list-inside text-white space-y-2">
+              <!-- Các mục hành động -->
+            </ul>
+          </div>
+
+          
+          <!-- Phần podcast được đề xuất -->
+          <div id="podcastRecommendSection" class="bg-white bg-opacity-20 dark:bg-gray-700 dark:bg-opacity-30 rounded-lg p-6 advice-box fade-in">
+            <h3 class="text-2xl font-bold mb-4 text-white flex items-center" id="podcastRecommendTitle">
+              <i class="fas fa-podcast advice-icon"></i> Podcast được đề xuất
+            </h3>
+            <div id="podcastContent" class="text-white mb-4"></div>
+            <a href="#" id="podcastLink" class="block mt-4 text-blue-300 hover:text-blue-400 flex items-center">
+              <i class="fas fa-external-link-alt mr-2"></i> Nghe podcast
+            </a>
+          </div>
+
+          <!-- Khu vực chat -->
+          <div id="chatSection" class="bg-white bg-opacity-20 dark:bg-gray-700 dark:bg-opacity-30 rounded-lg p-4 mt-4 md:col-span-2 md:p-6">
+            <h3 class="text-2xl font-bold mb-4 text-white" id="chatTitle">Chuyên gia tư vấn tâm lý</h3>
+            <div id="chatWindow" class="space-y-4 overflow-y-auto max-h-64 md:max-h-full p-2 bg-opacity-10 rounded-lg">
+              <!-- Tin nhắn sẽ được thêm vào đây -->
+            </div>            
+            <form id="chatForm" class="mt-4 flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
+              <input id="chatInput" type="text" class="w-full p-2 rounded-lg" placeholder="Nhập tin nhắn của bạn..." required />
+              <button type="submit" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300">
+                Gửi
+              </button>
+            </form>            
+          </div>
+
+        </div>
+      </main>
+    
     <!-- Loading Spinner -->
     <div id="loadingSpinner" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-        <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-16 w-16"></div>
+      <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-16 w-16"></div>
     </div>
-
+  
     <!-- Cảnh báo và từ chối trách nhiệm -->
     <footer class="mt-8 text-center text-white text-sm">
-        <p><strong>Lưu ý:</strong> Trang web này không thay thế cho tư vấn chuyên nghiệp. Nếu bạn đang gặp vấn đề nghiêm trọng về sức khỏe tâm thần, hãy tìm kiếm sự giúp đỡ từ chuyên gia.</p>
+        <p id="footerNote"><strong>Lưu ý:</strong> Trang web này không thay thế cho tư vấn chuyên nghiệp. Nếu bạn đang gặp vấn đề nghiêm trọng về sức khỏe tâm thần, hãy tìm kiếm sự giúp đỡ từ chuyên gia.</p>
     </footer>
-
-    <style>
-        /* CSS cho khung chat */
-        #chatWindow {
-            display: flex;
-            flex-direction: column;
-        }
-        .chat-bubble {
-            max-width: 70%;
-            word-wrap: break-word;
-            margin-bottom: 10px;
-        }
-        .chat-bubble-self {
-            align-self: flex-end;
-        }
-        .chat-bubble-other {
-            align-self: flex-start;
-        }
-
-        /* Loading Spinner Styles */
-        .loader {
-            border-top-color: #3498db;
-            animation: spin 1s infinite linear;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-    </style>
-
+  
     <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        'use strict';
+
+        // Biến theo dõi ngôn ngữ hiện tại
+        let currentLanguage = "vi";
+
+        // Biến theo dõi cảm xúc hiện tại
+        let currentEmotion = '';
+
+        // Biến toàn cục để theo dõi trạng thái trang thư giãn
+        let isRelaxing = false;
+
+        // Các từ ngữ trong tiếng Anh
+        const englishTexts = {
+          pageTitle: "FOR YOU",
+          howAreYouText: "How are you feeling today?",
+          happyText: "Happy",
+          sadText: "Sad",
+          angryText: "Angry",
+          scaredText: "Scared",
+          stressedText: "Stressed",
+          relaxText: "How about relaxing?",
+          relaxTitle: "Close your eyes!",
+          relaxDesc: "Relax with your favorite podcast, music, and books",
+          backText: "Go back",
+          musicTitle: "Listen to music",
+          forumTitle: "Share with us",
+          expertAdviceTitle: "Expert Advice",
+          actionTitle: "Suggested Actions",
+          podcastRecommendTitle: "Recommended Podcasts",
+          chatTitle: "Psychological Counselor",
+          submitForum: "Post",
+          initialChat: "Hello! I'm your virtual assistant. Please share how you're feeling.",
+          note: "<strong>Note:</strong> This website does not replace professional counseling. If you are experiencing serious mental health issues, please seek help from a professional.",
+          advices: {
+            happy: "Enjoy these positive feelings and share them with those around you. This is a good time to strengthen relationships and create lasting memories.",
+            sad: "Feeling sad is normal, and it will pass. Allow yourself to feel this emotion but also seek support from friends and family.",
+            angry: "When angry, pause and think before acting. Practice anger management techniques like deep breathing or counting down from 10.",
+            scared: "Fear can make you feel powerless, but remember you are stronger than you think. Sharing your fear with others can help you see it from a different perspective.",
+            stressed: "Chronic stress can affect your health. Identify the source of your stress and find ways to resolve it. Don't forget to take time for yourself and relax."
+          },
+          actions: {
+            happy: [
+              "Share your joy with a loved one",
+              "Write down positive thoughts in your journal",
+              "Engage in volunteer activities"
+            ],
+            sad: [
+              "Practice 10 minutes of meditation",
+              "Call a close friend",
+              "Go for a walk in the park"
+            ],
+            angry: [
+              "Count from 1 to 10 and take deep breaths",
+              "Write down your thoughts",
+              "Exercise for 15 minutes"
+            ],
+            scared: [
+              "Practice 4-7-8 breathing technique",
+              "Talk to someone you trust",
+              "Visualize a safe and peaceful place"
+            ],
+            stressed: [
+              "Perform muscle relaxation exercises",
+              "Create a priority list for tasks",
+              "Listen to relaxing music for 15 minutes"
+            ]
+          }
+        };
+
+        // Các từ ngữ trong tiếng Việt
+        const vietnameseTexts = {
+          pageTitle: "FOR YOU",
+          howAreYouText: "Hôm nay bạn cảm thấy thế nào?",
+          happyText: "Vui vẻ",
+          sadText: "Buồn",
+          angryText: "Tức giận",
+          scaredText: "Sợ hãi",
+          stressedText: "Căng thẳng",
+          relaxText: "Thư giãn chút không?",
+          relaxTitle: "Bạn hãy nhắm mắt lại!",
+          relaxDesc: "Thư giãn với podcast, nhạc và sách yêu thích",
+          backText: "Quay lại",
+          musicTitle: "Nghe nhạc nè",
+          forumTitle: "Hãy chia sẻ đến chúng tôi",
+          expertAdviceTitle: "Lời khuyên từ Chuyên gia",
+          actionTitle: "Hành động đề xuất",
+          podcastRecommendTitle: "Podcast được đề xuất",
+          chatTitle: "Chuyên gia tư vấn tâm lý",
+          submitForum: "Đăng bài",
+          initialChat: "Xin chào! Tôi là trợ lý ảo. Hãy chia sẻ thêm về cảm xúc của bạn.",
+          note: "<strong>Lưu ý:</strong> Trang web này không thay thế cho tư vấn chuyên nghiệp. Nếu bạn đang gặp vấn đề nghiêm trọng về sức khỏe tâm thần, hãy tìm kiếm sự giúp đỡ từ chuyên gia.",
+          advices: {
+            happy: "Hãy tận hưởng cảm xúc tích cực này và lan tỏa nó đến những người xung quanh. Đây là cơ hội tốt để củng cố các mối quan hệ và tạo ra những kỷ niệm đẹp.",
+            sad: "Cảm giác buồn bã là bình thường và sẽ qua đi. Hãy cho phép bản thân cảm nhận cảm xúc này, nhưng đồng thời cũng tìm kiếm sự hỗ trợ từ người thân và bạn bè.",
+            angry: "Khi tức giận, hãy tạm dừng và suy nghĩ trước khi hành động. Thực hành các kỹ thuật kiểm soát cơn giận như hít thở sâu hoặc đếm ngược từ 10 xuống 1.",
+            scared: "Nỗi sợ có thể khiến ta cảm thấy bất lực, nhưng hãy nhớ rằng bạn mạnh mẽ hơn bạn nghĩ. Chia sẻ nỗi sợ với người khác có thể giúp bạn nhìn nhận vấn đề từ góc độ khác.",
+            stressed: "Stress kéo dài có thể ảnh hưởng đến sức khỏe. Hãy xác định nguồn gốc của stress và tìm cách giải quyết. Đừng quên dành thời gian cho bản thân và thư giãn."
+          },
+          actions: {
+            happy: [
+              "Chia sẻ niềm vui với người thân",
+              "Ghi lại những điều tích cực trong nhật ký",
+              "Tham gia hoạt động tình nguyện"
+            ],
+            sad: [
+              "Thực hành thiền định 10 phút",
+              "Gọi điện cho người bạn thân",
+              "Đi dạo trong công viên"
+            ],
+            angry: [
+              "Đếm từ 1 đến 10 và hít thở sâu",
+              "Viết ra những suy nghĩ của bạn",
+              "Tập thể dục 15 phút"
+            ],
+            scared: [
+              "Thực hành kỹ thuật thở 4-7-8",
+              "Nói chuyện với người bạn tin tưởng",
+              "Tưởng tượng một nơi an toàn và bình yên"
+            ],
+            stressed: [
+              "Thực hiện bài tập thư giãn cơ bắp",
+              "Lập danh sách ưu tiên công việc",
+              "Nghe nhạc thư giãn 15 phút"
+            ]
+          }
+        };
+
+        // Hàm cập nhật relaxButton text
+        function updateRelaxButtonText(language) {
+          const relaxTextElement = document.getElementById('relaxText');
+          if (isRelaxing) {
+              relaxTextElement.textContent = language === "en" ? "Go back" : "Quay lại";
+          } else {
+              relaxTextElement.textContent = language === "en" ? "How about relaxing?" : "Thư giãn chút không?";
+          }
+        }
+
+        // Hàm cập nhật nội dung dựa trên ngôn ngữ
+        function updateLanguage(language) {
+          const texts = language === "en" ? englishTexts : vietnameseTexts;
+          document.getElementById("pageTitle").textContent = texts.pageTitle;
+          document.getElementById("howAreYouText").textContent = texts.howAreYouText;
+          document.getElementById("happyText").textContent = texts.happyText;
+          document.getElementById("sadText").textContent = texts.sadText;
+          document.getElementById("angryText").textContent = texts.angryText;
+          document.getElementById("scaredText").textContent = texts.scaredText;
+          document.getElementById("stressedText").textContent = texts.stressedText;
+          document.getElementById("relaxTitle").textContent = texts.relaxTitle;
+          document.getElementById("relaxDesc").textContent = texts.relaxDesc;
+          document.getElementById("backText").textContent = texts.backText;
+          document.getElementById("musicTitle").textContent = texts.musicTitle;
+          document.getElementById("forumTitle").textContent = texts.forumTitle;
+          document.getElementById("expertAdviceTitle").textContent = texts.expertAdviceTitle;
+          document.getElementById("actionTitle").textContent = texts.actionTitle;
+          document.getElementById("podcastRecommendTitle").textContent = texts.podcastRecommendTitle;
+          document.getElementById("chatTitle").textContent = texts.chatTitle;
+          document.getElementById("submitForum").textContent = texts.submitForum;
+          document.getElementById("footerNote").innerHTML = texts.note;
+
+          // Update relaxButton text based on the current state
+          updateRelaxButtonText(language);
+
+          // Cập nhật các hành động và lời khuyên nếu có cảm xúc đang chọn
+          if (currentEmotion) {
+              updateActionList(currentEmotion, texts.actions);
+              updateExpertAdvice(currentEmotion, texts.advices);
+              updatePodcastContent(currentEmotion);
+              initChatWithAI(currentEmotion, texts.initialChat);
+              
+              // Thêm dòng này để cập nhật tiêu đề cảm xúc
+              setEmoteTitle(currentEmotion);
+          }
+        }
+
+        // Xử lý sự kiện khi nhấn nút chuyển ngôn ngữ
+        const langSwitch = document.getElementById("langSwitch");
+        langSwitch.addEventListener("click", function () {
+          currentLanguage = currentLanguage === "vi" ? "en" : "vi";
+          updateLanguage(currentLanguage);
+          this.textContent = currentLanguage === "vi" ? "English" : "Tiếng Việt";
+
+          // Cập nhật nội dung nút Dark Mode theo ngôn ngữ
+          const darkModeToggle = document.getElementById("darkModeToggle");
+          darkModeToggle.textContent = darkModeToggle.textContent === "Dark Mode" || darkModeToggle.textContent === "Chế độ tối"
+            ? (currentLanguage === "vi" ? "Chế độ màu sắc" : "Color Mode")
+            : (currentLanguage === "vi" ? "Chế độ tối" : "Dark Mode");
+        });
+
+        // Khởi tạo với ngôn ngữ hiện tại
+        updateLanguage(currentLanguage);
+
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById("darkModeToggle");
+
+        // Lấy chế độ tối từ localStorage nếu có
+        let isDarkModeEnabled = localStorage.getItem("darkMode");
+
+        // Hàm bật/tắt chế độ tối
+        const enableDarkMode = () => {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("darkMode", "enabled");
+        };
+
+        const disableDarkMode = () => {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("darkMode", "disabled");
+        };
+
+        // Kiểm tra nếu chế độ tối được bật, áp dụng
+        if (isDarkModeEnabled === "enabled") {
+          enableDarkMode();
+          darkModeToggle.textContent = currentLanguage === "vi" ? "Chế độ màu sắc" : "Color Mode";
+        } else {
+          darkModeToggle.textContent = currentLanguage === "vi" ? "Chế độ tối" : "Dark Mode";
+        }
+
+        // Khi nhấn vào nút chuyển chế độ tối
+        darkModeToggle.addEventListener("click", () => {
+          isDarkModeEnabled = localStorage.getItem("darkMode");
+          if (isDarkModeEnabled !== "enabled") {
+            enableDarkMode();
+            darkModeToggle.textContent = currentLanguage === "vi" ? "Chế độ màu sắc" : "Color Mode";
+          } else {
+            disableDarkMode();
+            darkModeToggle.textContent = currentLanguage === "vi" ? "Chế độ tối" : "Dark Mode";
+          }
+        });
+
         // Các biến toàn cục
         const emoteButtons = document.querySelectorAll('.emote-btn');
         const emotePage = document.getElementById('emotePage');
         const emoteTitle = document.getElementById('emoteTitle');
         const backButton = document.getElementById('backButton');
         const expertAdviceContent = document.getElementById('expertAdviceContent');
+        const expertAdviceLink = document.getElementById('expertAdviceLink');
         const podcastContent = document.getElementById('podcastContent');
+        const podcastLink = document.getElementById('podcastLink');
         const actionList = document.getElementById('actionList');
         const chatForm = document.getElementById('chatForm');
         const chatInput = document.getElementById('chatInput');
         const chatWindow = document.getElementById('chatWindow');
-        let currentEmotion = '';
+        const relaxButton = document.getElementById('relaxButton');
+        const relaxSection = document.getElementById('relaxSection');
+        const howAreYouText = document.getElementById('howAreYouText');
+        const podcastVideo = document.getElementById('podcastVideo');
+        const podcastStopBtn = document.getElementById('podcastStopBtn');
         let chatHistory = [];
 
         // Bản đồ cảm xúc và văn bản hiển thị
         const emoteTexts = {
+          vi: {
             happy: 'vui vẻ',
             sad: 'buồn',
             angry: 'tức giận',
             scared: 'sợ hãi',
             stressed: 'căng thẳng'
+          },
+          en: {
+            happy: 'happy',
+            sad: 'sad',
+            angry: 'angry',
+            scared: 'scared',
+            stressed: 'stressed'
+          }
         };
 
         // Hàm hiển thị trang cảm xúc
         emoteButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const emote = button.getAttribute('data-emote');
-                showEmotePage(emote);
-            });
+          button.addEventListener('click', () => {
+            const emote = button.getAttribute('data-emote');
+            console.log(`Emotion button clicked: ${emote}`);
+            showEmotePage(emote);
+          });
         });
 
         function showEmotePage(emote) {
-            currentEmotion = emote;
-            document.getElementById('emoteButtons').classList.add('hidden');
-            emotePage.classList.remove('hidden');
-            backButton.classList.remove('hidden');
-            setEmoteTitle(emote);
+          currentEmotion = emote;
+          emoteButtons.forEach(button => button.classList.add('hidden'));
+          emotePage.classList.remove('hidden');
+          backButton.classList.remove('hidden');
+          relaxButton.classList.add('hidden'); // Ẩn nút thư giãn chút không
+          howAreYouText.classList.add('hidden'); // Ẩn dòng chữ "Hôm nay bạn cảm thấy thế nào?"
+          setEmoteTitle(emote);
+          console.log(`Showing emotePage for emotion: ${emote}`);
 
-            // Cập nhật nội dung dựa trên cảm xúc
-            updateActionList(emote);
-            updateExpertAdvice(emote);
-            updatePodcastContent(emote);
+          // Cập nhật nội dung dựa trên cảm xúc
+          const texts = currentLanguage === "en" ? englishTexts : vietnameseTexts;
+          updateActionList(emote, texts.actions);
+          updateExpertAdvice(emote, texts.advices);
+          updatePodcastContent(emote);
 
-            // Khởi tạo cuộc trò chuyện với AI
-            initChatWithAI(emote);
+          // Khởi tạo cuộc trò chuyện với AI
+          initChatWithAI(emote, texts.initialChat);
         }
 
         function setEmoteTitle(emote) {
-            emoteTitle.textContent = `Bạn đang cảm thấy ${emoteTexts[emote]}`;
+          emoteTitle.textContent = currentLanguage === "en" 
+            ? `You are feeling ${emoteTexts.en[emote]}` 
+            : `Bạn đang cảm thấy ${emoteTexts.vi[emote]}`;
+          console.log(`Set emoteTitle: ${emoteTitle.textContent}`);
         }
 
         // Hàm cập nhật danh sách hành động
-        function updateActionList(emote) {
-            const actions = {
-                happy: [
-                    "Chia sẻ niềm vui với người thân",
-                    "Ghi lại những điều tích cực trong nhật ký",
-                    "Tham gia hoạt động tình nguyện"
-                ],
-                sad: [
-                    "Thực hành thiền định 10 phút",
-                    "Gọi điện cho người bạn thân",
-                    "Đi dạo trong công viên"
-                ],
-                angry: [
-                    "Đếm từ 1 đến 10 và hít thở sâu",
-                    "Viết ra những suy nghĩ của bạn",
-                    "Tập thể dục 15 phút"
-                ],
-                scared: [
-                    "Thực hành kỹ thuật thở 4-7-8",
-                    "Nói chuyện với người bạn tin tưởng",
-                    "Tưởng tượng một nơi an toàn và bình yên"
-                ],
-                stressed: [
-                    "Thực hiện bài tập thư giãn cơ bắp",
-                    "Lập danh sách ưu tiên công việc",
-                    "Nghe nhạc thư giãn 15 phút"
-                ]
-            };
-
-            actionList.innerHTML = actions[emote].map(action => `<li>${action}</li>`).join('');
+        function updateActionList(emote, actions) {
+          actionList.innerHTML = actions[emote].map(action => `<li>${action}</li>`).join('');
+          console.log(`Updated actionList for emotion: ${emote}`);
         }
 
         // Hàm cập nhật lời khuyên từ chuyên gia
-        function updateExpertAdvice(emote) {
-            const advices = {
-                happy: "Hãy tận hưởng cảm xúc tích cực này và lan tỏa nó đến những người xung quanh. Đây là cơ hội tốt để củng cố các mối quan hệ và tạo ra những kỷ niệm đẹp.",
-                sad: "Cảm giác buồn bã là bình thường và sẽ qua đi. Hãy cho phép bản thân cảm nhận cảm xúc này, nhưng đồng thời cũng tìm kiếm sự hỗ trợ từ người thân và bạn bè.",
-                angry: "Khi tức giận, hãy tạm dừng và suy nghĩ trước khi hành động. Thực hành các kỹ thuật kiểm soát cơn giận như hít thở sâu hoặc đếm ngược từ 10 xuống 1.",
-                scared: "Nỗi sợ có thể khiến ta cảm thấy bất lực, nhưng hãy nhớ rằng bạn mạnh mẽ hơn bạn nghĩ. Chia sẻ nỗi sợ với người khác có thể giúp bạn nhìn nhận vấn đề từ góc độ khác.",
-                stressed: "Stress kéo dài có thể ảnh hưởng đến sức khỏe. Hãy xác định nguồn gốc của stress và tìm cách giải quyết. Đừng quên dành thời gian cho bản thân và thư giãn."
-            };
+        function updateExpertAdvice(emote, advices) {
+          const advice = advices[emote];
+          expertAdviceContent.textContent = advice;
+          console.log(`Updated expertAdviceContent for emotion: ${emote}`);
 
-            expertAdviceContent.textContent = advices[emote];
-            expertAdviceLink.href = `https://example.com/${emote}-expert-advice`;
+          // Cập nhật liên kết dựa trên cảm xúc
+          const adviceLinks = {
+            happy: "https://www.thetimes.com/culture/books/article/how-be-happy-rules-advice-harvard-2023-dbw3lshff",
+            sad: "https://www.psychologytoday.com/intl/blog/emotion-as-information/202011/how-to-release-sadness",
+            angry: "https://www.mayoclinic.org/healthy-lifestyle/adult-health/in-depth/anger-management/art-20045434",
+            scared: "https://www.mentalhealth.org.uk/explore-mental-health/publications/how-overcome-anxiety-and-fear",
+            stressed: "https://www.mentalhealth.org.uk/explore-mental-health/publications/how-manage-and-reduce-stress"
+          };
+
+          expertAdviceLink.href = adviceLinks[emote];
+          console.log(`Set expertAdviceLink.href: ${adviceLinks[emote]}`);
         }
 
         // Hàm cập nhật nội dung podcast
         function updatePodcastContent(emote) {
-            const podcasts = {
-                happy: "'Niềm vui mỗi ngày' - Tập mới nhất về cách duy trì tâm trạng tích cực",
-                sad: "'Vượt qua nỗi buồn' - Chia sẻ từ những người đã vượt qua trầm cảm",
-                angry: "'Kiểm soát cơn giận' - Kỹ thuật quản lý cảm xúc hiệu quả",
-                scared: "'Đối mặt với nỗi sợ' - Câu chuyện truyền cảm hứng về vượt qua phobia",
-                stressed: "'Sống chậm lại' - Bí quyết cân bằng cuộc sống trong thế giới hối hả"
-            };
+          const podcasts = {
+            happy: "‘Niềm vui mỗi ngày’ - Tập mới nhất về cách duy trì tâm trạng tích cực",
+            sad: "‘Vượt qua nỗi buồn’ - Chia sẻ từ những người đã vượt qua trầm cảm",
+            angry: "‘Kiểm soát cơn giận’ - Kỹ thuật quản lý cảm xúc hiệu quả",
+            scared: "‘Đối mặt với nỗi sợ’ - Câu chuyện truyền cảm hứng về vượt qua phobia",
+            stressed: "‘Sống chậm lại’ - Bí quyết cân bằng cuộc sống trong thế giới hối hả"
+          };
 
-            podcastContent.textContent = podcasts[emote];
-            podcastLink.href = "https://www.youtube.com/watch?v=bdK95yNhIP0";
+          podcastContent.textContent = podcasts[emote];
+          podcastLink.href = "https://www.youtube.com/watch?v=bdK95yNhIP0";
+          console.log(`Set podcastContent and podcastLink for emotion: ${emote}`);
         }
 
         // Hàm khởi tạo cuộc trò chuyện với AI
-        function initChatWithAI(emote) {
-            chatWindow.innerHTML = ''; // Xóa nội dung chat trước đó
-            chatHistory = []; // Xóa lịch sử chat
-            addChatBubble(`Xin chào! Tôi là trợ lý ảo. Hãy chia sẻ thêm về cảm xúc ${emoteTexts[emote]} của bạn.`, 'other');
+        function initChatWithAI(emote, initialChatMessage) {
+          chatWindow.innerHTML = ''; // Xóa nội dung chat trước đó
+          chatHistory = []; // Xóa lịch sử chat
+          addChatBubbleWithTypingEffect(initialChatMessage, 'other');
+          console.log(`Initialized chat with AI for emotion: ${emote}`);
         }
 
         // Xử lý sự kiện gửi tin nhắn
         chatForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const message = chatInput.value.trim();
-            if (message !== '') {
-                addChatBubble(message, 'self');
-                chatInput.value = '';
-                generateAIResponse(message);
-            }
+          e.preventDefault();
+          const message = chatInput.value.trim();
+          if (message !== '') {
+            addChatBubble(message, 'self');
+            chatInput.value = '';
+            generateAIResponse(message);
+            console.log(`User sent message: ${message}`);
+          }
         });
 
-        // Hàm thêm tin nhắn vào khung chat
+        // Hàm thêm tin nhắn vào khung chat (hiển thị trực tiếp không có hiệu ứng gõ phím)
         function addChatBubble(message, type) {
-            const bubble = document.createElement('div');
-            bubble.classList.add('chat-bubble', `chat-bubble-${type}`, 'p-4', 'rounded-xl', 'max-w-xs', 'text-white', 'transition-all', 'duration-300', 'transform', 'hover:scale-105');
-            bubble.textContent = message;
+          const bubble = document.createElement('div');
+          bubble.classList.add('chat-bubble', `chat-bubble-${type}`, 'p-4', 'rounded-xl', 'max-w-xs', 'text-white', 'transition-all', 'duration-300', 'transform', 'hover:scale-105');
+          
+          if (type === 'self') {
+            bubble.classList.add('chat-bubble-self');
+          } else {
+            bubble.classList.add('chat-bubble-other');
+          }
 
-            if (type === 'self') {
-                bubble.classList.add('bg-green-500');
-            } else {
-                bubble.classList.add('bg-blue-500');
-            }
-
-            chatWindow.appendChild(bubble);
-            chatWindow.scrollTop = chatWindow.scrollHeight;
-
-            // Lưu vào lịch sử chat
-            chatHistory.push({ message, type });
-            localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+          bubble.textContent = message;
+          chatWindow.appendChild(bubble);
+          chatWindow.scrollTop = chatWindow.scrollHeight;
+          console.log(`Added chat bubble (${type}): ${message}`);
         }
 
-        // Hàm tải lịch sử chat
-        function loadChatHistory() {
-            const savedHistory = localStorage.getItem('chatHistory');
-            if (savedHistory) {
-                chatHistory = JSON.parse(savedHistory);
-                chatHistory.forEach(chat => {
-                    addChatBubble(chat.message, chat.type);
-                });
+        // Hàm thêm tin nhắn vào khung chat với hiệu ứng gõ phím
+        function addChatBubbleWithTypingEffect(message, type, delay = 50) {
+          const bubble = document.createElement('div');
+          bubble.classList.add('chat-bubble', `chat-bubble-${type}`, 'p-4', 'rounded-xl', 'max-w-xs', 'text-white', 'transition-all', 'duration-300', 'transform', 'hover:scale-105');
+          
+          if (type === 'self') {
+            bubble.classList.add('chat-bubble-self');
+          } else {
+            bubble.classList.add('chat-bubble-other');
+          }
+
+          chatWindow.appendChild(bubble);
+          chatWindow.scrollTop = chatWindow.scrollHeight;
+
+          // Hiển thị từng ký tự với độ trễ
+          let index = 0;
+          const typingInterval = setInterval(() => {
+            bubble.textContent += message[index];
+            index++;
+            chatWindow.scrollTop = chatWindow.scrollHeight;  // Cuộn xuống cuối cùng để xem tin nhắn
+            if (index === message.length) {
+              clearInterval(typingInterval);  // Dừng khi đã hoàn thành
+              console.log(`Finished typing message (${type}): ${message}`);
             }
+          }, delay);
         }
 
         // Hàm tạo phản hồi từ AI
         async function generateAIResponse(userMessage) {
+        try {
             showLoadingSpinner(); // Hiển thị biểu tượng tải
-            try {
-                const response = await fetch('http://localhost:3000/chat', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        message: userMessage,
-                        emotion: currentEmotion // Gửi cảm xúc hiện tại
-                    })
-                });
+            console.log(`Generating AI response for message: ${userMessage}`);
 
-                const data = await response.json();
-                if (data.reply) {
-                    addChatBubble(data.reply, 'other');
-                } else {
-                    addChatBubble('Xin lỗi, có lỗi xảy ra. Vui lòng thử lại sau.', 'other');
-                }
-            } catch (error) {
-                console.error(error);
-                addChatBubble('Xin lỗi, không thể kết nối đến máy chủ.', 'other');
-            } finally {
-                hideLoadingSpinner(); // Ẩn biểu tượng tải
+            // Chuyển đổi tin nhắn người dùng về chữ thường để kiểm tra không phân biệt hoa thường
+            const lowerCaseMessage = userMessage.toLowerCase();
+
+            // Danh sách các câu hỏi đặc biệt
+            const specialQuestions = [
+            "ai là chủ của bạn",
+            "ai đã tạo ra bạn",
+            "who is your owner",
+            "who created you",
+            "chủ của bạn là ai"
+            ];
+
+            // Kiểm tra xem tin nhắn có chứa câu hỏi đặc biệt không
+            const isSpecialQuestion = specialQuestions.some(question =>
+            lowerCaseMessage.includes(question)
+            );
+
+            if (isSpecialQuestion) {
+            const specialReply = "Tan Tai - RAP001 - K49 UEH";
+            addChatBubbleWithTypingEffect(specialReply, 'other');
+            console.log(`AI replied: ${specialReply}`);
+            hideLoadingSpinner(); // Ẩn biểu tượng tải
+            return; // Kết thúc hàm để không gọi API
             }
+
+            // Gọi API như bình thường nếu không có câu hỏi đặc biệt
+            const response = await fetch('http://localhost:5000/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                message: userMessage,
+                emotion: currentEmotion // Gửi cảm xúc hiện tại
+            })
+            });
+
+            hideLoadingSpinner(); // Ẩn biểu tượng tải
+            console.log(`Received response from AI`);
+
+            const data = await response.json();
+            if (data.reply) {
+            addChatBubbleWithTypingEffect(data.reply, 'other');
+            console.log(`AI replied: ${data.reply}`);
+            } else {
+            const fallbackMessage = currentLanguage === "en" 
+                ? 'Sorry, something went wrong. Please try again later.' 
+                : 'Xin lỗi, có lỗi xảy ra. Vui lòng thử lại sau.';
+            addChatBubbleWithTypingEffect(fallbackMessage, 'other');
+            console.log(`AI fallback message: ${fallbackMessage}`);
+            }
+        } catch (error) {
+            console.error(error);
+            hideLoadingSpinner(); // Ẩn biểu tượng tải
+            const errorMessage = currentLanguage === "en" 
+            ? 'Sorry, unable to connect to the server.' 
+            : 'Xin lỗi, không thể kết nối đến máy chủ.';
+            addChatBubbleWithTypingEffect(errorMessage, 'other');
+            console.log(`AI error message: ${errorMessage}`);
         }
+        }
+
+        // Thêm tin nhắn chào mừng khi người dùng vừa vào trang
+        window.addEventListener('load', function() {
+          const initialMessage = currentLanguage === "en" 
+            ? englishTexts.initialChat 
+            : vietnameseTexts.initialChat;
+          addChatBubbleWithTypingEffect(initialMessage, 'other');
+          console.log(`Added initial chat message: ${initialMessage}`);
+        });
 
         // Hàm hiển thị biểu tượng tải
         function showLoadingSpinner() {
-            document.getElementById('loadingSpinner').classList.remove('hidden');
+          document.getElementById('loadingSpinner').classList.remove('hidden');
+          console.log(`Loading spinner shown`);
         }
 
         // Hàm ẩn biểu tượng tải
         function hideLoadingSpinner() {
-            document.getElementById('loadingSpinner').classList.add('hidden');
+          document.getElementById('loadingSpinner').classList.add('hidden');
+          console.log(`Loading spinner hidden`);
         }
 
-        // Xử lý nút quay lại
+        // Xử lý nút "Quay lại" trong trang cảm xúc
         backButton.addEventListener('click', () => {
-            document.getElementById('emoteButtons').classList.remove('hidden');
-            emotePage.classList.add('hidden');
-            backButton.classList.add('hidden');
-            localStorage.removeItem('chatHistory'); // Xóa lịch sử chat khi quay lại
+          emoteButtons.forEach(button => button.classList.remove('hidden'));
+          emotePage.classList.add('hidden');
+          backButton.classList.add('hidden');
+          relaxButton.classList.remove('hidden'); // Hiển thị lại nút thư giãn chút không
+          howAreYouText.classList.remove('hidden'); // Hiển thị lại dòng chữ "Hôm nay bạn cảm thấy thế nào?"
+          localStorage.removeItem('chatHistory'); // Xóa lịch sử chat khi quay lại
+          console.log(`Back button clicked - Returning to main page`);
+        });
+
+        // Xử lý nút "Thư giãn chút không?" đổi thành "Quay lại" khi người dùng vào trang thư giãn
+        relaxButton.addEventListener('click', function() {
+          relaxSection.classList.toggle('hidden');
+          emoteButtons.forEach(button => button.classList.toggle('hidden'));
+          howAreYouText.classList.toggle('hidden');
+          console.log(`Relax button clicked - Toggling relaxSection`);
+
+          // Thay đổi trạng thái nút
+          if (isRelaxing) {
+            document.getElementById('relaxText').textContent = currentLanguage === "en" ? "How about relaxing?" : "Thư giãn chút không?";
+            isRelaxing = false;
+            console.log(`Set relaxButton text to: ${document.getElementById('relaxText').textContent}`);
+          } else {
+            document.getElementById('relaxText').textContent = currentLanguage === "en" ? "Go back" : "Quay lại";
+            isRelaxing = true;
+            backButton.classList.add('hidden'); // Ẩn nút quay lại khi ở trang thư giãn
+            console.log(`Set relaxButton text to: ${document.getElementById('relaxText').textContent}`);
+          }
         });
 
         // Xử lý gửi bài viết trên diễn đàn
-        document.getElementById('forumForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            showLoadingSpinner(); // Hiển thị biểu tượng tải
-            setTimeout(() => {
-                hideLoadingSpinner(); // Ẩn biểu tượng tải
-                alert('Bài viết của bạn đã được đăng thành công!');
-                this.reset();
-            }, 1000);
+        const forumForm = document.getElementById('forumForm');
+        forumForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          showLoadingSpinner(); // Hiển thị biểu tượng tải
+          console.log(`Forum form submitted`);
+          setTimeout(() => {
+            hideLoadingSpinner(); // Ẩn biểu tượng tải
+            const successMessage = currentLanguage === "en" 
+              ? 'Your post has been successfully submitted!' 
+              : 'Bài viết của bạn đã được đăng thành công!';
+            alert(successMessage);
+            forumForm.reset();
+            console.log(`Forum form reset and success message shown`);
+          }, 1000);
         });
 
         // Hỗ trợ emoji trong khung chat
         chatInput.addEventListener('input', function() {
-            // Thay thế ký hiệu bằng emoji
-            const emojiMap = {
-                ':)': '😊',
-                ':(': '😢',
-                ':D': '😄',
-                '<3': '❤️'
-            };
-            for (const [key, value] of Object.entries(emojiMap)) {
-                this.value = this.value.replace(new RegExp(`\\${key}`, 'g'), value);
-            }
+          // Thay thế ký hiệu bằng emoji
+          const emojiMap = {
+            ':)': '😊',
+            ':(': '😢',
+            ':D': '😄',
+            '<3': '❤️'
+          };
+          for (const [key, value] of Object.entries(emojiMap)) {
+            this.value = this.value.replace(new RegExp(`\\${key}`, 'g'), value);
+          }
+          console.log(`Chat input updated with emojis`);
         });
+
+        // Xử lý nút dừng/phát podcast
+        podcastStopBtn.addEventListener('click', () => {
+          if (podcastVideo.paused) {
+            podcastVideo.play();
+            podcastStopBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            console.log(`Podcast video played`);
+          } else {
+            podcastVideo.pause();
+            podcastStopBtn.innerHTML = '<i class="fas fa-play"></i>';
+            console.log(`Podcast video paused`);
+          }
+        });
+
+      });
     </script>
 </body>
 </html>
